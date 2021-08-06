@@ -163,3 +163,11 @@ class PlayerTest(TwiMLTest):
         self.assertTrue("HELP" in str(response.data))
 
         create_message_mock.assert_not_called()
+
+    def test_player_creek_redirect(self):
+        self.app.set_cookie('localhost', 'Stop', 'Creek')
+        response = self.sms("YES", url="player")
+
+        self.assertTwiML(response)
+        self.assertTrue("Redirect" in str(response.data))
+        self.assertTrue("/player/creek" in str(response.data))

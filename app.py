@@ -90,6 +90,9 @@ def player():
         client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
                                to=app.config['TWILIO_GM'],
                                body="Player is indicating she is stuck.")
+    elif "Creek" == request.cookies.get('Stop', None):
+        response.redirect('/player/creek')
+        resp = make_response(str(response))
     elif "YES" in request.form['Body'].upper():
         response.message("Awesome! Gather up your crew and get stoked for "
                          "a rad photo scavenger hunt around lovely Livingston "
