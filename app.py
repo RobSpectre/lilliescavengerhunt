@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask import request
+from flask import make_response
 
 from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
@@ -69,6 +70,60 @@ def gm():
                            body=body)
 
     return str(response)
+
+
+@app.route('/player', methods=['GET', 'POST'])
+def player():
+    response = MessagingResponse()
+
+    if "HELP" == request.form['Body'].upper():
+        response.message("Text CLUE to get another hint about where you "
+                         "need to go.\nText STUCK to summon the bat signal "
+                         "and get additional assistance.\nIf you have "
+                         "another question, just text to connect with our "
+                         "AI.\nHave fun!")
+        resp = make_response(str(response))
+    elif "STUCK" == request.form['Body'].upper():
+        response.message("Help is on the way!")
+        resp = make_response(str(response))
+
+        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                               to=app.config['TWILIO_GM'],
+                               body="Player is indicating she is stuck.")
+    elif "YES" in request.form['Body'].upper():
+        response.message("Awesome! Gather up your crew and get stoked for "
+                         "a rad photo scavenger hunt around lovely Livingston "
+                         "Manor. A few folks you might know are going to give "
+                         "you clues of locations you will need to go. To "
+                         "memorialize this time with your besties, snag a "
+                         "picture with your fellow Scavengers at each spot. "
+                         "If you find all the locations, a special surprise "
+                         "awaits!")
+        response.message("If you ever need assistance on your journey, text "
+                         "HELP to see all the available options. If you're "
+                         "confused by a particular hint, text CLUE to get "
+                         "up to 3 additional hints on where to go. If you're "
+                         "still stuck after that, just text me here and "
+                         "our hyper intelligent machine learning algorithm "
+                         "will determine how to help.")
+        response.message("Are you ladies ready to go? Text YES or NO.")
+
+        resp = make_response(str(response))
+        resp.set_cookie("Stop", "Creek")
+
+        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                               to=app.config['TWILIO_GM'],
+                               body="Game started.")
+    elif "NO" == request.form['Body'].upper():
+        response.message("Ah, c'mon now. Rob spent a time on this. It'll "
+                         "be fun! Text YES to get going.")
+        resp = make_response(str(response))
+    else:
+        response.message("Text HELP for a list of the options. Text YES to "
+                         "start the scavenger hunt!")
+        resp = make_response(str(response))
+
+    return resp
 
 
 if __name__ == '__main__':

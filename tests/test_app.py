@@ -103,3 +103,63 @@ class PlayerTest(TwiMLTest):
         self.assertTwiML(response)
         self.assertTrue("Redirect" in str(response.data))
         self.assertTrue("/player" in str(response.data))
+
+    def test_player_help(self):
+        response = self.sms("HELP", url="/player")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("CLUE" in str(response.data))
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_player_stuck(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+
+        response = self.sms("STUCK", url="/player")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+
+        create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
+                                                    to=app.config['TWILIO_GM'],
+                                                    body="Player is indicating "
+                                                         "she is stuck.")
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_player_start(self, create_message_mock):
+        response = self.sms("YES!!!!", url="/player")
+
+        create_message_mock.return_value.sid = "SM718"
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Awesome" in str(response.data))
+
+        assert 'Stop=Creek; Path=/' in response.headers.getlist('Set-Cookie')
+        create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
+                                                    to=app.config['TWILIO_GM'],
+                                                    body="Game started.")
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_player_start_negative(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+
+        response = self.sms("NO", url="/player")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Text YES to get going" in str(response.data))
+
+        create_message_mock.assert_not_called()
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_player_start_unknown(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+
+        response = self.sms("Unknown", url="/player")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("HELP" in str(response.data))
+
+        create_message_mock.assert_not_called()
