@@ -6,7 +6,7 @@ from .context import app
 app.config['TWILIO_ACCOUNT_SID'] = 'ACxxxxxx'
 app.config['TWILIO_AUTH_TOKEN'] = 'yyyyyyyyy'
 app.config['TWILIO_CALLER_ID'] = '+15558675309'
-app.config['TWILIO_PLAYER'] = '+15558675309'
+app.config['TWILIO_PLAYER'] = '15559990000'
 app.config['TWILIO_GM'] = '+15556667777'
 
 
