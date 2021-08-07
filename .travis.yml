@@ -9,3 +9,4 @@ script:
   - tox
 env:
   - TOXENV: py38
+  - TOXENV: py39
