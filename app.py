@@ -199,8 +199,12 @@ def player_creek():
 @app.route('/video/<location>')
 def video(location):
     if location == "fish":
-        title = "A Sashimi Start"
+        title = "Start with Sashimi"
         video = url_for('static', filename='video/ktrevorwilson.mp4')
+    else:
+        title = "File Not Found"
+        video = url_for('static', filename='video/sadtrombone.mp4')
+        return render_template('video.html', video=video, title=title), 404
 
     return render_template('video.html', video=video, title=title)
 

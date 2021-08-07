@@ -1,5 +1,5 @@
-from unittest import TestCase
 from unittest import mock
+from unittest import TestCase
 
 from .context import app
 
@@ -15,7 +15,6 @@ class TwiMLTest(TestCase):
         self.app = app.test_client()
 
     def assertTwiML(self, response):
-        app.logger.info(response.data)
         self.assertTrue(b"</Response>" in response.data, "Did not find "
                         "</Response>: {0}".format(response.data))
         self.assertEqual("200 OK", response.status)
@@ -172,6 +171,12 @@ class PlayerTest(TwiMLTest):
         self.assertTrue("Redirect" in str(response.data))
         self.assertTrue("/player/creek" in str(response.data))
 
+    def test_videoi_404(self):
+        response = self.app.get('/video/doesnotexist')
+
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue("File Not Found" in str(response.data))
+
 
 class PlayerTestCreek(TwiMLTest):
     @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
@@ -245,3 +250,9 @@ class PlayerTestCreek(TwiMLTest):
         create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
                                                     to=app.config['TWILIO_GM'],
                                                     body="Testing relay.")
+
+    def test_creek_video(self):
+        response = self.app.get('/video/fish')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("Start with Sashimi" in str(response.data))
