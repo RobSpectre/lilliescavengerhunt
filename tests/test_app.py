@@ -171,3 +171,66 @@ class PlayerTest(TwiMLTest):
         self.assertTwiML(response)
         self.assertTrue("Redirect" in str(response.data))
         self.assertTrue("/player/creek" in str(response.data))
+
+
+class PlayerTestCreek(TwiMLTest):
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_creek_start(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+        response = self.sms("YES", url="/player/creek")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Click this link" in str(response.data))
+
+        create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
+                                                    to=app.config['TWILIO_GM'],
+                                                    body="Video for Creek "
+                                                         "delivered.")
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_creek_clue_0(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+        response = self.sms("CLUE", url="/player/creek")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Willow" in str(response.data))
+
+        assert 'Clue=1; Path=/' in response.headers.getlist('Set-Cookie')
+        create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
+                                                    to=app.config['TWILIO_GM'],
+                                                    body="Clue 0 for Creek "
+                                                         "requested.")
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_creek_clue_1(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+        self.app.set_cookie('localhost', 'Clue', '1')
+        response = self.sms("CLUE", url="/player/creek")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Museum" in str(response.data))
+
+        assert 'Clue=2; Path=/' in response.headers.getlist('Set-Cookie')
+        create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
+                                                    to=app.config['TWILIO_GM'],
+                                                    body="Clue 1 for Creek "
+                                                         "requested.")
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_creek_clue_2(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+        self.app.set_cookie('localhost', 'Clue', '2')
+        response = self.sms("CLUE", url="/player/creek")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Google" in str(response.data))
+
+        assert 'Clue=0; Path=/' in response.headers.getlist('Set-Cookie')
+        create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
+                                                    to=app.config['TWILIO_GM'],
+                                                    body="Clue 2 for Creek "
+                                                         "requested.")

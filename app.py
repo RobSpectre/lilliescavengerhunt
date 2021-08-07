@@ -1,8 +1,9 @@
 import os
 
 from flask import Flask
-from flask import request
 from flask import make_response
+from flask import request
+from flask import url_for
 
 from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
@@ -127,6 +128,70 @@ def player():
         resp = make_response(str(response))
 
     return resp
+
+
+@app.route('/player/creek', methods=['GET', 'POST'])
+def player_creek():
+    response = MessagingResponse()
+
+    if "YES" in request.form['Body'].upper():
+        response.message("Awesome! Our first stop is nearby. To "
+                         "help kick of your journey, we got a little help "
+                         "from a familiar face. Click this link to receive "
+                         "your first clue: {0}".format(url_for('video',
+                                                               location='creek',
+                                                               _external=True)))
+
+        resp = make_response(str(response))
+
+        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                               to=app.config['TWILIO_GM'],
+                               body="Video for Creek delivered.")
+
+    elif "CLUE" == request.form['Body'].upper():
+        clue_counter = request.cookies.get('Clue', None)
+        if not clue_counter or clue_counter == "0":
+            clue_counter = 0
+
+            response.message("This creek always bore the same name, but it "
+                             "was spelled very differently over the years. "
+                             "Weelewaughmack, Weelewaughwemack, "
+                             "Willikwernock, Willerwhemack, Willowwemoc, "
+                             "Williwemock... some fishermen just call it "
+                             "Willow.")
+
+            resp = make_response(str(response))
+            resp.set_cookie("Clue", "1")
+        elif clue_counter == "1":
+            response.message("To find the creek's most famous fish, there are "
+                             "some resources around you. Maybe see if someone "
+                             "from the Livingston Manor Fly Fishing Club "
+                             "is around or run a few minutes north on "
+                             "Route 17 to the Catskill Fly Fishing Museum.")
+            response.message("Nothing says \"I just turned 40\" like a "
+                             "fishing museum. Awwwwwww yeah.")
+
+            resp = make_response(str(response))
+            resp.set_cookie("Clue", "2")
+        elif clue_counter == "2":
+            response.message("You don't have to wade hip deep to capture this "
+                             "photo - a screenshot off Google will work fine. "
+                             "We're just looking for the most popular fish!")
+
+            resp = make_response(str(response))
+            resp.set_cookie("Clue", "0")
+
+        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                               to=app.config['TWILIO_GM'],
+                               body="Clue {0} for Creek requested."
+                                    "".format(clue_counter))
+
+    return resp
+
+
+@app.route('/video/<location>')
+def video(location):
+    return location
 
 
 if __name__ == '__main__':
