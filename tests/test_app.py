@@ -32,7 +32,8 @@ class TwiMLTest(TestCase):
             'FromCountry': 'US',
             'FromZip': '55555'}
         if extra_params:
-            params = dict(params.items() + extra_params.items())
+            params = {**params, **extra_params}
+
         return self.app.post(url, data=params)
 
     def call(self, url='/voice', to=app.config['TWILIO_CALLER_ID'],
@@ -51,7 +52,7 @@ class TwiMLTest(TestCase):
         if digits:
             params['Digits'] = digits
         if extra_params:
-            params = dict(params.items() + extra_params.items())
+            params = {**params, **extra_params}
         return self.app.post(url, data=params)
 
 
@@ -256,3 +257,23 @@ class PlayerTestCreek(TwiMLTest):
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue("Start with Sashimi" in str(response.data))
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_creek_image(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+
+        response = self.sms("Testing image.",
+                            url="/player/creek",
+                            extra_params={'NumMedia': '1',
+                                          'MediaUrl0':
+                                          'https://booger.com/booger.jpg'})
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Well done" in str(response.data))
+        create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
+                                                    to=app.config['TWILIO_GM'],
+                                                    body="Photo received.",
+                                                    media_url=['https://booger.com/'
+                                                               'booger.jpg'])
+        assert 'Stop=Bridge; Path=/' in response.headers.getlist('Set-Cookie')

@@ -186,7 +186,24 @@ def player_creek():
                                to=app.config['TWILIO_GM'],
                                body="Clue {0} for Creek requested."
                                     "".format(clue_counter))
+    elif request.form.get('NumMedia', None):
+        for n in range(0, int(request.form['NumMedia'])):
+            media_number = 'MediaUrl{0}'.format(str(n))
+            client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                                   to=app.config['TWILIO_GM'],
+                                   body="Photo received.",
+                                   media_url=[request.form[media_number]])
+
+        response.message("That is one fresh fish - the most popular "
+                         "fish from the Willowemec Creek is indeed "
+                         "the trout! Well done Scavengers!")
+        response.message("When you ladies are ready to continue your "
+                         "journey, text YES.")
+
+        resp = make_response(str(response))
+        resp.set_cookie("Stop", "Bridge")
     else:
+        app.logger.info("params: {0}".format(str(request.form)))
         client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
                                to=app.config['TWILIO_GM'],
                                body=request.form['Body'])
