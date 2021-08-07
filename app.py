@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask import make_response
 from flask import request
+from flask import render_template
 from flask import url_for
 
 from twilio.rest import Client
@@ -138,9 +139,9 @@ def player_creek():
         response.message("Awesome! Our first stop is nearby. To "
                          "help kick of your journey, we got a little help "
                          "from a familiar face. Click this link to receive "
-                         "your first clue: {0}".format(url_for('video',
-                                                               location='creek',
-                                                               _external=True)))
+                         "your clue: {0}".format(url_for('video',
+                                                         location='fish',
+                                                         _external=True)))
 
         resp = make_response(str(response))
 
@@ -197,7 +198,11 @@ def player_creek():
 
 @app.route('/video/<location>')
 def video(location):
-    return location
+    if location == "fish":
+        title = "A Sashimi Start"
+        video = url_for('static', filename='video/ktrevorwilson.mp4')
+
+    return render_template('video.html', video=video, title=title)
 
 
 if __name__ == '__main__':

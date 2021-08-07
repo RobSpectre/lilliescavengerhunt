@@ -1,0 +1,25 @@
+{
+  "name": "lilliescavengerhunt",
+  "version": "1.0.0",
+  "description": "A photo scavenger hunt for a special lady's 40th berfday.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "pytest --cov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobSpectre/lilliescavengerhunt.git"
+  },
+  "author": "Rob Spectre",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RobSpectre/lilliescavengerhunt/issues"
+  },
+  "homepage": "https://github.com/RobSpectre/lilliescavengerhunt#readme",
+  "dependencies": {
+    "tailwindcss": "^2.2.7"
+  }
+}

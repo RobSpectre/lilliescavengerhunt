@@ -1,0 +1,35 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }} // Lillie's Big 40th Berfday Scavenger Hunt</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+  <!-- Place favicon.ico in the root directory -->
+</head>
+
+<body>
+  <header class="bg-indigo-600">
+      <div class="w-screen py-6 flex text-center border-b border-indigo-500 lg:border-none">
+          <h1 class="w-screen text-base font-medium text-white"
+            key="Title">
+            Lillie's Super Soft 40th Scavenger Hunt
+          </h1>
+      </div>
+  </header>
+  {% block content %}
+  {% endblock %}
+  <footer class="bg-gray-800" aria-labelledby="footer-heading">
+  <h2 id="footer-heading" class="sr-only">Footer</h2>
+  <div class="w-screen mx-auto py-6 text-center">
+    <p class="text-base text-gray-400 md:mt-0 md:order-1">
+       Made with ❤️  for Lillie by Rob - 2021
+    </p>
+  </div>
+</footer>
+</body>
+
+</html>
