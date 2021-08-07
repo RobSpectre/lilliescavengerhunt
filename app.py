@@ -185,6 +185,12 @@ def player_creek():
                                to=app.config['TWILIO_GM'],
                                body="Clue {0} for Creek requested."
                                     "".format(clue_counter))
+    else:
+        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                               to=app.config['TWILIO_GM'],
+                               body=request.form['Body'])
+
+        resp = make_response(str(response))
 
     return resp
 

@@ -234,3 +234,14 @@ class PlayerTestCreek(TwiMLTest):
                                                     to=app.config['TWILIO_GM'],
                                                     body="Clue 2 for Creek "
                                                          "requested.")
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_creek_relay(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+        response = self.sms("Testing relay.", url="/player/creek")
+
+        self.assertTrue("<Response />" in str(response.data))
+
+        create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
+                                                    to=app.config['TWILIO_GM'],
+                                                    body="Testing relay.")
