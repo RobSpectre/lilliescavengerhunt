@@ -2,11 +2,12 @@ dist: focal
 language: python
 python:
     - "3.8"
+    - "3.9"
 install:
   - pip install tox
   - pip install codecov
 script:
   - tox
 env:
-  - TOXENV: py36
   - TOXENV: py38
+  - TOXENV: py39
