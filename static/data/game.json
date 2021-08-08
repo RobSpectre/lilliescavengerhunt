@@ -1,0 +1,245 @@
+{
+  "Stop:": {
+    "Fish": {
+      "Introduction": {
+        "Messages": [
+          {
+            "Message": "Awesome! Our first stop is nearby. To help kick of your journey, we got a little help from a familiar face. Click this link to receive your clue: {0}",
+            "Link": "/video/fish",
+            "Title": "Start with Sashimi"
+          }
+        ]
+      },
+      "Clues": [
+        {
+          "Messages": [
+            {
+              "Message": "This creek always bore the same name, but it was spelled very differently over the years. Weelewaughmack, Weelewaughwemack, Willikwernock, Willerwhemack, Willowwemoc, Williwemock... some fishermen just call it Willow."
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "To find the creek's most famous fish",
+                "there are some resources around you. Maybe see if someone from the Livingston Manor Fly Fishing Club is around or run a few minutes north on Route 17 to the Catskill Fly Fishing Museum.\""
+              ]
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "You don't have to wade hip deep to capture this photo - a screenshot off Google will work fine. We're just looking for the most popular fish!"
+              ]
+            }
+          ]
+        }
+      ],
+      "Victory": {
+        "Messages": [
+          {
+            "Message": "That is one fresh fish - the most popular fish from the Willowemec Creek is indeed the trout! Well done Scavengers!"
+          },
+          {
+            "Message": "When you ladies are ready to continue your journey, text YES."
+          }
+        ]
+      }
+    },
+    "Bridge": {
+      "Introduction": {
+        "Messages": [
+          {
+            "Message": "Terrific. For this one, we'll need to hop in the car. We're in search of a shabby, rough hewn, adorable piece of architecture. Who better to help you on the way the way than this guy? Click on the link to get your clue: {0}",
+            "Link": "/video/bridge",
+            "Title": "Over Troubled Waters"
+          }
+        ]
+      },
+      "Clues": [
+        {
+          "Messages": [
+            {
+              "Message": "We're looking for a bridge built in 1850, though it wouldn't look it. It was restored to its former might in 1984."
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "This landmark is adjacent to a park perfect for taking photos",
+                "along with picnic tables and a public restroom."
+              ]
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "Google Maps prominently lists Sure Shot Gunsmithing near by but - pro tip - don't stop to visit."
+              ]
+            }
+          ]
+        }
+      ],
+      "Victory": {
+        "Messages": [
+          {
+            "Message": "Bingo bongo! Good lookin' bridge, better lookin' ladies. Next stop is a bit of a drive - maybe use the restroom before continuing. Text YES when y'all are ready to boogie."
+          }
+        ]
+      }
+    },
+    "Farm": {
+      "Introduction": {
+        "Messages": [
+          {
+            "Message": "Rad - here we go! Scoot to your coupe and get ready to get your Google on. We're looking for a farm with a particular type of animal. To help, we've enlisted this party animal to send you on your way. Click this link to get your clue: {0}",
+            "Link": "/video/farm",
+            "Title": "Camelids Have More Fun"
+          }
+        ]
+      },
+      "Clues": [
+        {
+          "Messages": [
+            {
+              "Message": "You can leave Ginger and Boots at home - we're not looking for an ostrich. These furry friends are four legged mammals."
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "Like llamas",
+                "they are domesticated and South American. Unlike llamas",
+                "they aren't packing any gear - they're raised solely for their wool."
+              ]
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "This farm is named for the waterway spilling out of Petrillo Lake."
+              ]
+            }
+          ]
+        }
+      ],
+      "Victory": {
+        "Messages": [
+          {
+            "Message": "BOSH! Fun fact, Rob raised alpacas (and llamas and camels and a whole bunch of other animals) in high school. While they aren't as affectionate as camels, they're a shite sight better behaved than llamas. Cause llamas are dicks."
+          },
+          {
+            "Message": "Time to head back to town. Enjoy your time at Buck Brook and text YES when you are ready for your next clue."
+          }
+        ]
+      }
+    },
+    "Synagogue": {
+      "Introduction": {
+        "Messages": [
+          {
+            "Message": "In small towns like these places of worship represent the best of what local artisans have to offer. To help us find a special one in Livingston Manor, we consult the august historian of Letterkenny: {0}",
+            "Link": "/video/synagogue",
+            "Title": "Brothers and Sisters"
+          }
+        ]
+      },
+      "Clues": [
+        {
+          "Messages": [
+            {
+              "Message": "Unlike the churches and the post office, this landmark is among the oldest standing structures in Livingston Manor. Except for the bridge, of course."
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "In the original Hebrew",
+                "this congregation is called אֲגוּדַת אַחִים‎."
+              ]
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "It took a generation of Jewish migration before the first synagogue was built. Max Schwartz was the first to arrive in 1909",
+                "a butcher from Eastern Poland. All super Googleable material."
+              ]
+            }
+          ]
+        }
+      ],
+      "Victory": {
+        "Messages": [
+          {
+            "Message": "Nice photo! This congregation - Agudas Achim - was named long before this building was built, meaning \"a gathering of brothers and sisters.\" Not unlike the special congregation you've gathered this weekend."
+          },
+          {
+            "Message": "If you haven't noticed, we've been finding local examples of some of Lillie's finest qualities. Her love of nature, antiquity, animals and family. For our last stop, we're just going to have fun. If you're getting hungry, stop by The Kaatskeller. Their pies are great, but don't leave without trying the trout rillettes. Text YES when you're ready for the last stop on your journey."
+          }
+        ]
+      }
+    },
+    "Brewery": {
+      "Introduction": {
+        "Messages": [
+          {
+            "Message": "Hopefully all this running around made you thirsty. We have one last clue delivered from one guy who knows how to have a good time: {0}",
+            "Link": "/video/brewery",
+            "Title": "Puppers Time"
+          }
+        ]
+      },
+      "Clues": [
+        {
+          "Messages": [
+            {
+              "Message": "You got a lot of breweries to sort through. This one is not far."
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "The second most distinctive element of this brewery is its rad mascot reminiscent of what happens when you get the leaf in Super Mario 3."
+              ]
+            }
+          ]
+        },
+        {
+          "Messages": [
+            {
+              "Message": [
+                "Layup clue: this brewery is named for the mountain range you're in right now."
+              ]
+            }
+          ]
+        }
+      ],
+      "Victory": {
+        "Messages": [
+          {
+            "Message": "Bottoms up babes! Well done - hope you all had fun on this super soft scavenger hunt for your 40th birthday. Here's one last message to conclude this fun adventure: {0}",
+            "Link": "/video/rob"
+          }
+        ]
+      }
+    }
+  }
+}
