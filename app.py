@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import Flask
 from flask import make_response
@@ -15,6 +16,11 @@ from twilio.twiml.voice_response import Say
 
 app = Flask(__name__, static_url_path='/static')
 app.config.from_pyfile('local_settings.py')
+
+with open('static/data/game.json') as f:
+    app.config['Game'] = json.load(f)
+
+print(app.config['Game'])
 
 client = Client(app.config['TWILIO_ACCOUNT_SID'],
                 app.config['TWILIO_AUTH_TOKEN'])
@@ -67,9 +73,7 @@ def gm():
     else:
         body = request.form['Body']
 
-    client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
-                           to=app.config['TWILIO_PLAYER'],
-                           body=body)
+    send_player_message(body)
 
     return str(response)
 
@@ -89,11 +93,9 @@ def player():
         response.message("Help is on the way!")
         resp = make_response(str(response))
 
-        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
-                               to=app.config['TWILIO_GM'],
-                               body="Player is indicating she is stuck.")
+        send_gm_message("Player is indicating she is stuck.")
     elif "Creek" == request.cookies.get('Stop', None):
-        response.redirect('/player/creek')
+        response.redirect('/player/game')
         resp = make_response(str(response))
     elif "YES" in request.form['Body'].upper():
         response.message("Awesome! Gather up your crew and get stoked for "
@@ -116,9 +118,7 @@ def player():
         resp = make_response(str(response))
         resp.set_cookie("Stop", "Creek")
 
-        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
-                               to=app.config['TWILIO_GM'],
-                               body="Game started.")
+        send_gm_message("Game started.")
     elif "NO" == request.form['Body'].upper():
         response.message("Ah, c'mon now. Rob spent a time on this. It'll "
                          "be fun! Text YES to get going.")
@@ -131,8 +131,8 @@ def player():
     return resp
 
 
-@app.route('/player/creek', methods=['GET', 'POST'])
-def player_creek():
+@app.route('/player/game', methods=['GET', 'POST'])
+def player_game():
     response = MessagingResponse()
 
     if "YES" in request.form['Body'].upper():
@@ -145,9 +145,7 @@ def player_creek():
 
         resp = make_response(str(response))
 
-        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
-                               to=app.config['TWILIO_GM'],
-                               body="Video for Creek delivered.")
+        send_gm_message("Video for Creek delivered.")
 
     elif "CLUE" == request.form['Body'].upper():
         clue_counter = request.cookies.get('Clue', None)
@@ -182,17 +180,13 @@ def player_creek():
             resp = make_response(str(response))
             resp.set_cookie("Clue", "0")
 
-        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
-                               to=app.config['TWILIO_GM'],
-                               body="Clue {0} for Creek requested."
-                                    "".format(clue_counter))
+        send_gm_message("Clue {0} for Creek requested."
+                        "".format(clue_counter))
     elif request.form.get('NumMedia', None):
         for n in range(0, int(request.form['NumMedia'])):
             media_number = 'MediaUrl{0}'.format(str(n))
-            client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
-                                   to=app.config['TWILIO_GM'],
-                                   body="Photo received.",
-                                   media_url=[request.form[media_number]])
+            send_gm_message("Photo received.",
+                            media_url=[request.form[media_number]])
 
         response.message("That is one fresh fish - the most popular "
                          "fish from the Willowemec Creek is indeed "
@@ -224,6 +218,34 @@ def video(location):
         return render_template('video.html', video=video, title=title), 404
 
     return render_template('video.html', video=video, title=title)
+
+
+def send_player_message(body, media_url=None):
+    if media_url:
+        msg = client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                                     to=app.config['TWILIO_PLAYER'],
+                                     body=body,
+                                     media_url=media_url)
+    else:
+        msg = client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                                     to=app.config['TWILIO_PLAYER'],
+                                     body=body)
+
+    return msg
+
+
+def send_gm_message(body, media_url=None):
+    if media_url:
+        msg = client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                                     to=app.config['TWILIO_GM'],
+                                     body=body,
+                                     media_url=media_url)
+    else:
+        msg = client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
+                                     to=app.config['TWILIO_GM'],
+                                     body=body)
+
+    return msg
 
 
 if __name__ == '__main__':
