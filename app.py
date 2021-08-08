@@ -170,19 +170,19 @@ def player_game(stop):
     elif request.form.get('NumMedia', None):
         for n in range(0, int(request.form['NumMedia'])):
             media_number = 'MediaUrl{0}'.format(str(n))
-            send_gm_message("Photo received.",
-                            media_url=[request.form[media_number]])
+            send_gm_message("Photo received for {0}.".format(stop),
+                            media_url=request.form[media_number])
 
         for message in data['Victory']['Messages']:
-            response = reply_message(response, message, stop)
+            if stop == "Brewery":
+                response = reply_message(response, message, "Rob")
+            else:
+                response = reply_message(response, message, stop)
 
         resp = make_response(str(response))
         resp.set_cookie("Stop", data['Victory']['Next'])
     else:
-        app.logger.info("params: {0}".format(str(request.form)))
-        client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
-                               to=app.config['TWILIO_GM'],
-                               body=request.form['Body'])
+        send_gm_message(request.form['Body'])
 
         resp = make_response(str(response))
 
@@ -191,9 +191,24 @@ def player_game(stop):
 
 @app.route('/video/<location>')
 def video(location):
-    if location == "fish":
+    if location == "Fish":
         title = "Start with Sashimi"
+        video = url_for('static', filename='video/kamillakowal.mp4')
+    elif location == "Bridge":
+        title = "Over Troubled Waters"
+        video = url_for('static', filename='video/patrickmcneil.mp4')
+    elif location == "Farm":
+        title = "Camelids Have More Fun"
+        video = url_for('static', filename='video/dylanplayfair.mp4')
+    elif location == "Synagogue":
+        title = "Brothers and Sisters"
         video = url_for('static', filename='video/ktrevorwilson.mp4')
+    elif location == "Brewery":
+        title = "Puppers Time"
+        video = url_for('static', filename='video/nathandale.mp4')
+    elif location == "Rob":
+        title = "Happy Berfday Lillie!"
+        video = url_for('static', filename='video/robspectre.mp4')
     else:
         title = "File Not Found"
         video = url_for('static', filename='video/sadtrombone.mp4')

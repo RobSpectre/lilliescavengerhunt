@@ -139,7 +139,7 @@
       "Introduction": {
         "Messages": [
           {
-            "Body": "In small towns like these places of worship represent the best of what local artisans have to offer. To help us find a special one in Livingston Manor, we consult the august historian of Letterkenny: {0}",
+            "Body": "In small towns like these places of worship represent the best of what local artisans have to offer. To help us find a special one in Livingston Manor, we consult the august historian of Letterkenny. Click this link for the next stop on the hunt: {0}",
             "Path": "video",
             "Title": "Brothers and Sisters"
           }
@@ -184,7 +184,7 @@
       "Introduction": {
         "Messages": [
           {
-            "Body": "Hopefully all this running around made you thirsty. We have one last clue delivered from one guy who knows how to have a good time: {0}",
+            "Body": "Hopefully all this running around made you thirsty. We have one last clue delivered from one guy who knows how to have a good time. Click this link to wrap up the hunt: {0}",
             "Path": "video",
             "Title": "Puppers Time"
           }
@@ -219,7 +219,8 @@
             "Body": "Bottoms up babes! Well done - hope you all had fun on this super soft scavenger hunt for your 40th birthday. Here's one last message to conclude this fun adventure: {0}",
             "Path": "video"
           }
-        ]
+        ],
+        "Next": "Done"
       }
     }
   }
