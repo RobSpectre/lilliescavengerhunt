@@ -137,7 +137,7 @@ class PlayerTest(TwiMLTest):
         self.assertTrue("Message" in str(response.data))
         self.assertTrue("Awesome" in str(response.data))
 
-        assert 'Stop=Creek; Path=/' in response.headers.getlist('Set-Cookie')
+        assert 'Stop=Fish; Path=/' in response.headers.getlist('Set-Cookie')
         create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
                                                     to=app.config['TWILIO_GM'],
                                                     body="Game started.")
@@ -167,12 +167,12 @@ class PlayerTest(TwiMLTest):
         create_message_mock.assert_not_called()
 
     def test_player_game_redirect(self):
-        self.app.set_cookie('localhost', 'Stop', 'Creek')
+        self.app.set_cookie('localhost', 'Stop', 'Fish')
         response = self.sms("YES", url="player")
 
         self.assertTwiML(response)
         self.assertTrue("Redirect" in str(response.data))
-        self.assertTrue("/player/game" in str(response.data))
+        self.assertTrue("/player/Fish" in str(response.data))
 
     def test_videoi_404(self):
         response = self.app.get('/video/doesnotexist')
@@ -181,11 +181,11 @@ class PlayerTest(TwiMLTest):
         self.assertTrue("File Not Found" in str(response.data))
 
 
-class PlayerTestCreek(TwiMLTest):
+class PlayerTestFish(TwiMLTest):
     @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
     def test_game_start(self, create_message_mock):
         create_message_mock.return_value.sid = "SM718"
-        response = self.sms("YES", url="/player/game")
+        response = self.sms("YES", url="/player/Fish")
 
         self.assertTwiML(response)
         self.assertTrue("Message" in str(response.data))
@@ -193,13 +193,13 @@ class PlayerTestCreek(TwiMLTest):
 
         create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
                                                     to=app.config['TWILIO_GM'],
-                                                    body="Video for Creek "
+                                                    body="Video for Fish "
                                                          "delivered.")
 
     @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
     def test_game_clue_0(self, create_message_mock):
         create_message_mock.return_value.sid = "SM718"
-        response = self.sms("CLUE", url="/player/game")
+        response = self.sms("CLUE", url="/player/Fish")
 
         self.assertTwiML(response)
         self.assertTrue("Message" in str(response.data))
@@ -208,14 +208,14 @@ class PlayerTestCreek(TwiMLTest):
         assert 'Clue=1; Path=/' in response.headers.getlist('Set-Cookie')
         create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
                                                     to=app.config['TWILIO_GM'],
-                                                    body="Clue 0 for Creek "
+                                                    body="Clue 0 for Fish "
                                                          "requested.")
 
     @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
     def test_game_clue_1(self, create_message_mock):
         create_message_mock.return_value.sid = "SM718"
         self.app.set_cookie('localhost', 'Clue', '1')
-        response = self.sms("CLUE", url="/player/game")
+        response = self.sms("CLUE", url="/player/Fish")
 
         self.assertTwiML(response)
         self.assertTrue("Message" in str(response.data))
@@ -224,14 +224,14 @@ class PlayerTestCreek(TwiMLTest):
         assert 'Clue=2; Path=/' in response.headers.getlist('Set-Cookie')
         create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
                                                     to=app.config['TWILIO_GM'],
-                                                    body="Clue 1 for Creek "
+                                                    body="Clue 1 for Fish "
                                                          "requested.")
 
     @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
     def test_game_clue_2(self, create_message_mock):
         create_message_mock.return_value.sid = "SM718"
         self.app.set_cookie('localhost', 'Clue', '2')
-        response = self.sms("CLUE", url="/player/game")
+        response = self.sms("CLUE", url="/player/Fish")
 
         self.assertTwiML(response)
         self.assertTrue("Message" in str(response.data))
@@ -240,13 +240,13 @@ class PlayerTestCreek(TwiMLTest):
         assert 'Clue=0; Path=/' in response.headers.getlist('Set-Cookie')
         create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
                                                     to=app.config['TWILIO_GM'],
-                                                    body="Clue 2 for Creek "
+                                                    body="Clue 2 for Fish "
                                                          "requested.")
 
     @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
     def test_game_relay(self, create_message_mock):
         create_message_mock.return_value.sid = "SM718"
-        response = self.sms("Testing relay.", url="/player/game")
+        response = self.sms("Testing relay.", url="/player/Fish")
 
         self.assertTrue("<Response />" in str(response.data))
 
@@ -265,7 +265,7 @@ class PlayerTestCreek(TwiMLTest):
         create_message_mock.return_value.sid = "SM718"
 
         response = self.sms("Testing image.",
-                            url="/player/game",
+                            url="/player/Fish",
                             extra_params={'NumMedia': '1',
                                           'MediaUrl0':
                                           'https://booger.com/booger.jpg'})

@@ -17,10 +17,10 @@ from twilio.twiml.voice_response import Say
 app = Flask(__name__, static_url_path='/static')
 app.config.from_pyfile('local_settings.py')
 
+
 with open('static/data/game.json') as f:
     app.config['Game'] = json.load(f)
 
-print(app.config['Game'])
 
 client = Client(app.config['TWILIO_ACCOUNT_SID'],
                 app.config['TWILIO_AUTH_TOKEN'])
@@ -94,8 +94,8 @@ def player():
         resp = make_response(str(response))
 
         send_gm_message("Player is indicating she is stuck.")
-    elif "Creek" == request.cookies.get('Stop', None):
-        response.redirect('/player/game')
+    elif request.cookies.get('Stop', None):
+        response.redirect('/player/{0}'.format(request.cookies.get('Stop')))
         resp = make_response(str(response))
     elif "YES" in request.form['Body'].upper():
         response.message("Awesome! Gather up your crew and get stoked for "
@@ -116,7 +116,7 @@ def player():
         response.message("Are you ladies ready to go? Text YES or NO.")
 
         resp = make_response(str(response))
-        resp.set_cookie("Stop", "Creek")
+        resp.set_cookie("Stop", "Fish")
 
         send_gm_message("Game started.")
     elif "NO" == request.form['Body'].upper():
@@ -131,71 +131,53 @@ def player():
     return resp
 
 
-@app.route('/player/game', methods=['GET', 'POST'])
-def player_game():
+@app.route('/player/<stop>', methods=['GET', 'POST'])
+def player_game(stop):
     response = MessagingResponse()
 
+    data = app.config['Game']['Stop'][stop]
+
     if "YES" in request.form['Body'].upper():
-        response.message("Awesome! Our first stop is nearby. To "
-                         "help kick of your journey, we got a little help "
-                         "from a familiar face. Click this link to receive "
-                         "your clue: {0}".format(url_for('video',
-                                                         location='fish',
-                                                         _external=True)))
+        for message in data['Introduction']['Messages']:
+            response = reply_message(response, message, stop)
 
         resp = make_response(str(response))
 
-        send_gm_message("Video for Creek delivered.")
+        send_gm_message("Video for {0} delivered.".format(stop))
 
     elif "CLUE" == request.form['Body'].upper():
         clue_counter = request.cookies.get('Clue', None)
+        if clue_counter:
+            clue_counter = int(clue_counter)
         if not clue_counter or clue_counter == "0":
             clue_counter = 0
 
-            response.message("This creek always bore the same name, but it "
-                             "was spelled very differently over the years. "
-                             "Weelewaughmack, Weelewaughwemack, "
-                             "Willikwernock, Willerwhemack, Willowwemoc, "
-                             "Williwemock... some fishermen just call it "
-                             "Willow.")
+        for message in data['Clues'][clue_counter]['Messages']:
+            response = reply_message(response, message, stop)
 
-            resp = make_response(str(response))
-            resp.set_cookie("Clue", "1")
-        elif clue_counter == "1":
-            response.message("To find the creek's most famous fish, there are "
-                             "some resources around you. Maybe see if someone "
-                             "from the Livingston Manor Fly Fishing Club "
-                             "is around or run a few minutes north on "
-                             "Route 17 to the Catskill Fly Fishing Museum.")
-            response.message("Nothing says \"I just turned 40\" like a "
-                             "fishing museum. Awwwwwww yeah.")
+        send_gm_message("Clue {0} for {1} requested."
+                        "".format(clue_counter, stop))
 
-            resp = make_response(str(response))
-            resp.set_cookie("Clue", "2")
-        elif clue_counter == "2":
-            response.message("You don't have to wade hip deep to capture this "
-                             "photo - a screenshot off Google will work fine. "
-                             "We're just looking for the most popular fish!")
+        resp = make_response(str(response))
 
-            resp = make_response(str(response))
-            resp.set_cookie("Clue", "0")
+        clue_counter = clue_counter + 1
 
-        send_gm_message("Clue {0} for Creek requested."
-                        "".format(clue_counter))
+        if clue_counter > 2:
+            clue_counter = 0
+
+        resp.set_cookie("Clue", str(clue_counter))
+
     elif request.form.get('NumMedia', None):
         for n in range(0, int(request.form['NumMedia'])):
             media_number = 'MediaUrl{0}'.format(str(n))
             send_gm_message("Photo received.",
                             media_url=[request.form[media_number]])
 
-        response.message("That is one fresh fish - the most popular "
-                         "fish from the Willowemec Creek is indeed "
-                         "the trout! Well done Scavengers!")
-        response.message("When you ladies are ready to continue your "
-                         "journey, text YES.")
+        for message in data['Victory']['Messages']:
+            response = reply_message(response, message, stop)
 
         resp = make_response(str(response))
-        resp.set_cookie("Stop", "Bridge")
+        resp.set_cookie("Stop", data['Victory']['Next'])
     else:
         app.logger.info("params: {0}".format(str(request.form)))
         client.messages.create(from_=app.config['TWILIO_CALLER_ID'],
@@ -246,6 +228,20 @@ def send_gm_message(body, media_url=None):
                                      body=body)
 
     return msg
+
+
+def reply_message(response, message, stop):
+    if message.get('Path', None):
+        response.message(message['Body'].format(url_for(message['Path'],
+                                                        location=stop,
+                                                        _external=True)))
+    elif message.get('Media', None):
+        msg = response.message(message['Body'])
+        msg.media(message['Media'])
+    else:
+        response.message(message['Body'])
+
+    return response
 
 
 if __name__ == '__main__':
