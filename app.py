@@ -205,7 +205,7 @@ def video(location):
         video = url_for('static', filename='video/ktrevorwilson.mp4')
     elif location == "Brewery":
         title = "Puppers Time"
-        video = url_for('static', filename='video/nathandale.mp4')
+        video = url_for('static', filename='video/nathandales.mp4')
     elif location == "Rob":
         title = "Happy Berfday Lillie!"
         video = url_for('static', filename='video/robspectre.mp4')
