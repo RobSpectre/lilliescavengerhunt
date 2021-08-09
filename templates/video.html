@@ -13,7 +13,8 @@
         </div>
         <div class="flex items-center justify-center">
             {% if video %}
-            <video class="rounded-lg border-2 border-indigo-600" controls>
+            <video class="rounded-lg border-2 border-indigo-600"
+                   poster="/static/images/placeholder.png" autoplay="autoplay" controls>
               <source src="{{ video }}" type="video/mp4">
               Your browser does not support video.
             </video>
