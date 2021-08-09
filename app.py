@@ -194,27 +194,35 @@ def video(location):
     if location == "Fish":
         title = "Start with Sashimi"
         video = url_for('static', filename='video/kamillakowal.mp4')
+        thumbnail = url_for('static', filename='images/janisjoplin.png')
     elif location == "Bridge":
         title = "Over Troubled Waters"
         video = url_for('static', filename='video/patrickmcneil.mp4')
+        thumbnail = url_for('static', filename='images/joecocker.png')
     elif location == "Farm":
         title = "Camelids Have More Fun"
         video = url_for('static', filename='video/dylanplayfair.mp4')
+        thumbnail = url_for('static', filename='images/jimihendrix.png')
     elif location == "Synagogue":
         title = "Brothers and Sisters"
         video = url_for('static', filename='video/ktrevorwilson.mp4')
+        thumbnail = url_for('static', filename='images/arloguthrie.png')
     elif location == "Brewery":
         title = "Puppers Time"
         video = url_for('static', filename='video/nathandales.mp4')
+        thumbnail = url_for('static', filename='images/bobweir.png')
     elif location == "Rob":
         title = "Happy Berfday Lillie!"
         video = url_for('static', filename='video/robspectre.mp4')
+        thumbnail = url_for('static', filename='images/rogerdaltrey.png')
     else:
         title = "File Not Found"
         video = url_for('static', filename='video/sadtrombone.mp4')
+        thumbnail = None
         return render_template('video.html', video=video, title=title), 404
 
-    return render_template('video.html', video=video, title=title)
+    return render_template('video.html', video=video, title=title,
+                           thumbnail=thumbnail)
 
 
 def send_player_message(body, media_url=None):
