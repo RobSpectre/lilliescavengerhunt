@@ -346,6 +346,42 @@ class TestPlayerEdges(TwiMLTest):
         self.assertTrue("Willow" in str(response.data))
         assert 'Clue=1; Path=/' in response.headers.getlist('Set-Cookie')
 
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_admin_restart(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+        self.app.set_cookie('localhost', 'Stop', "Fish")
+
+        response = self.sms("ADMIN RESTART", url="/player")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Restarting game" in str(response.data))
+        assert 'Clue=0; Path=/' not in response.headers.getlist('Set-Cookie')
+        assert 'Stop=Fish; Path=/' not in response.headers.getlist('Set-Cookie')
+
+        create_message_mock.assert_called_once_with(to=app.config['TWILIO_GM'],
+                                                    from_=app.config['TWILIO_CALLER_ID'],
+                                                    body="Player restarted "
+                                                         "game.")
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_admin_change_stop(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+        self.app.set_cookie('localhost', 'Stop', "Fish")
+
+        response = self.sms("ADMIN 1", url="/player")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Game reset to Bridge." in str(response.data))
+        assert 'Clue=0; Path=/' in response.headers.getlist('Set-Cookie')
+        assert 'Stop=Bridge; Path=/' in response.headers.getlist('Set-Cookie')
+
+        create_message_mock.assert_called_once_with(to=app.config['TWILIO_GM'],
+                                                    from_=app.config['TWILIO_CALLER_ID'],
+                                                    body="Player reset game to "
+                                                         "Bridge.")
+
 
 class UtilitiesTest(TwiMLTest):
     @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')

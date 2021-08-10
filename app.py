@@ -94,18 +94,39 @@ def player():
         resp = make_response(str(response))
 
         send_gm_message("Player is indicating she is stuck.")
+    elif "ADMIN RESTART" == request.form['Body'].upper():
+        response.message("Restarting game.")
+        resp = make_response(str(response))
+
+        resp.set_cookie("Stop", "", expires=0)
+        resp.set_cookie("Clue", "", expires=0)
+        send_gm_message("Player restarted game.")
+    elif "ADMIN " in request.form['Body'].upper():
+        stop = int(request.form['Body'].upper().replace('ADMIN ', '').strip())
+
+        stop = [n[0] for n in app.config['Game']['Stop'].items()][stop]
+
+        response.message("Game reset to {0}.".format(stop))
+        resp = make_response(str(response))
+
+        resp.set_cookie("Stop", stop)
+        resp.set_cookie("Clue", "0")
+
+        send_gm_message("Player reset game to {0}.".format(stop))
     elif request.cookies.get('Stop', None):
         response.redirect('/player/{0}'.format(request.cookies.get('Stop')))
         resp = make_response(str(response))
     elif "YES" in request.form['Body'].upper():
-        response.message("Awesome! Gather up your crew and get stoked for "
-                         "a rad photo scavenger hunt around lovely Livingston "
-                         "Manor. A few folks you might know are going to give "
-                         "you clues of locations you will need to go. To "
-                         "memorialize this time with your besties, snag a "
-                         "picture with your fellow Scavengers at each spot. "
-                         "If you find all the locations, a special surprise "
-                         "awaits!")
+        msg = response.message("Awesome! Gather up your crew and get stoked for "
+                               "a rad photo scavenger hunt around lovely Livingston "
+                               "Manor. A few folks you might know are going to give "
+                               "you clues of locations you will need to go. To "
+                               "memorialize this time with your besties, snag a "
+                               "picture with your fellow Scavengers at each spot. "
+                               "If you find all the locations, a special surprise "
+                               "awaits!")
+        msg.media(url_for('static',
+                          filename='/static/images/scavengers_assemble.jpg'))
         response.message("If you ever need assistance on your journey, text "
                          "HELP to see all the available options. If you're "
                          "confused by a particular hint, text CLUE to get "
@@ -120,7 +141,7 @@ def player():
 
         send_gm_message("Game started.")
     elif "NO" == request.form['Body'].upper():
-        response.message("Ah, c'mon now. Rob spent a time on this. It'll "
+        response.message("Ah, c'mon now. Rob spent some time on this. It'll "
                          "be fun! Text YES to get going.")
         resp = make_response(str(response))
     else:
@@ -263,7 +284,7 @@ def reply_message(response, message, stop):
                                                         _external=True)))
     elif message.get('Media', None):
         msg = response.message(message['Body'])
-        msg.media(message['Media'])
+        msg.media(url_for('static', filename=message['Media']))
     else:
         response.message(message['Body'])
 

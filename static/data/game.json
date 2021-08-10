@@ -39,10 +39,8 @@
       "Victory": {
         "Messages": [
           {
-            "Body": "That is one fresh fish - the most popular fish from the Willowemec Creek is indeed the trout! Well done Scavengers!"
-          },
-          {
-            "Body": "When you ladies are ready to continue your journey, text YES."
+            "Body": "That is one fresh fish - the most popular fish from the Willowemec Creek is indeed the trout! Well done Scavengers!\n\nText YES when you are ready to continue the hunt.",
+            "Media": "images/fish.gif"
           }
         ],
         "Next": "Bridge"
@@ -87,7 +85,8 @@
       "Victory": {
         "Messages": [
           {
-            "Body": "Bingo bongo! Good lookin' bridge, better lookin' ladies. Next stop is a bit of a drive - maybe use the restroom before continuing. Text YES when y'all are ready to boogie."
+            "Body": "Bingo bongo! Good lookin' bridge, better lookin' ladies. Next stop is a bit of a drive - maybe use the restroom before continuing.\n\nText YES when y'all are ready to boogie.",
+            "Media": "/images/bridge.gif"
           }
         ],
         "Next": "Farm"
@@ -132,10 +131,8 @@
       "Victory": {
         "Messages": [
           {
-            "Body": "BOSH! Fun fact, Rob raised alpacas (and llamas and camels and a whole bunch of other animals) in high school. While they aren't as affectionate as camels, they're a shite sight better behaved than llamas. Cause llamas are dicks."
-          },
-          {
-            "Body": "Time to head back to town. Enjoy your time at Buck Brook and text YES when you are ready for your next clue."
+            "Body": "BOSH! We were indeed looking for the alpacas at Buck Brook Farms! Fun fact, Rob raised alpacas (and llamas and camels and a whole bunch of other animals) in high school. While they aren't as affectionate as camels, they're a shite sight better behaved than llamas. Cause llamas are dicks.\n\nTime to head back to town. Enjoy your time at Buck Brook and text YES when you are ready for your next clue.",
+            "Media": "images/llama.gif"
           }
         ],
         "Next": "Synagogue"
@@ -180,10 +177,8 @@
       "Victory": {
         "Messages": [
           {
-            "Body": "Nice photo! This congregation - Agudas Achim - was named long before this building was built, meaning \"a gathering of brothers and sisters.\" Not unlike the special congregation you've gathered this weekend."
-          },
-          {
-            "Body": "If you haven't noticed, we've been finding local examples of some of Lillie's finest qualities. Her love of nature, antiquity, animals and family. For our last stop, we're just going to have fun. If you're getting hungry, stop by The Kaatskeller. Their pies are great, but don't leave without trying the trout rillettes. Text YES when you're ready for the last stop on your journey."
+            "Body": "Nice photo! This congregation - Agudas Achim - was named long before this building was built, meaning \"a gathering of brothers and sisters.\" Not unlike the special congregation you've gathered this weekend.\n\nIf you haven't noticed, we've been finding local examples of some of Lillie's finest qualities. Her love of nature, antiquity, animals and family. For our last stop, we're just going to have fun. If you're getting hungry, stop by The Kaatskeller. Their pies are great, but don't leave without trying the trout rillettes.\n\nText YES when you're ready for the last stop on your journey.",
+            "Media": "images/wondrous.gif"
           }
         ],
         "Next": "Brewery"
@@ -193,7 +188,7 @@
       "Introduction": {
         "Messages": [
           {
-            "Body": "Hopefully all this running around made you thirsty. We have one last clue delivered from one guy who knows how to have a good time. Click this link to wrap up the hunt: {0}",
+            "Body": "Hopefully all this running around made you thirsty. We have one last clue delivered by one guy who knows how to have a good time. Click this link to wrap up the hunt: {0}",
             "Path": "video",
             "Title": "Puppers Time"
           },
