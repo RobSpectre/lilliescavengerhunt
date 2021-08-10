@@ -202,6 +202,22 @@ class PlayerTestGame(TwiMLTest):
             create_message_mock.reset_mock()
 
     @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_game_start_negative(self, create_message_mock):
+        for stop in [n[0] for n in app.config['Game']['Stop'].items()]:
+            create_message_mock.return_value.sid = "SM718"
+
+            response=self.sms("NO", url="/player/{0}".format(stop))
+
+            self.assertTrue("<Response />" in str(response.data))
+            self.assertFalse("well done" in str(response.data).lower())
+
+            create_message_mock.assert_called_once_with(from_=app.config['TWILIO_CALLER_ID'],
+                                                        to=app.config['TWILIO_GM'],
+                                                        body="NO")
+
+            create_message_mock.reset_mock()
+
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
     def test_game_clue_0(self, create_message_mock):
         for stop in [n[0] for n in app.config['Game']['Stop'].items()]:
             create_message_mock.return_value.sid = "SM718"
@@ -307,6 +323,28 @@ class PlayerTestGame(TwiMLTest):
             assert 'Stop={0}; Path=/'.format(next_stop) in response.headers.getlist('Set-Cookie')
 
             create_message_mock.reset_mock()
+
+
+class TestPlayerEdges(TwiMLTest):
+    @mock.patch('twilio.rest.api.v2010.account.message.MessageList.create')
+    def test_clue_counter_reset_between_rounds(self, create_message_mock):
+        create_message_mock.return_value.sid = "SM718"
+        self.app.set_cookie('localhost', 'Stop', "Fish")
+
+        self.sms("CLUE", url="/player/Fish")
+
+        self.sms("Testing image.",
+                 url="/player/Fish",
+                 extra_params={'NumMedia': '1',
+                               'MediaUrl0':
+                               'https://booger.com/booger.jpg'})
+
+        response = self.sms("CLUE", url="player/Fish")
+
+        self.assertTwiML(response)
+        self.assertTrue("Message" in str(response.data))
+        self.assertTrue("Willow" in str(response.data))
+        assert 'Clue=1; Path=/' in response.headers.getlist('Set-Cookie')
 
 
 class UtilitiesTest(TwiMLTest):

@@ -137,6 +137,8 @@ def player_game(stop):
 
     data = app.config['Game']['Stop'][stop]
 
+    num_media = request.form.get('NumMedia', None)
+
     if "YES" in request.form['Body'].upper():
         for message in data['Introduction']['Messages']:
             response = reply_message(response, message, stop)
@@ -167,8 +169,8 @@ def player_game(stop):
 
         resp.set_cookie("Clue", str(clue_counter))
 
-    elif request.form.get('NumMedia', None):
-        for n in range(0, int(request.form['NumMedia'])):
+    elif num_media and int(num_media) > 0:
+        for n in range(0, int(num_media)):
             media_number = 'MediaUrl{0}'.format(str(n))
             send_gm_message("Photo received for {0}.".format(stop),
                             media_url=request.form[media_number])
@@ -181,6 +183,7 @@ def player_game(stop):
 
         resp = make_response(str(response))
         resp.set_cookie("Stop", data['Victory']['Next'])
+        resp.set_cookie("Clue", "0")
     else:
         send_gm_message(request.form['Body'])
 

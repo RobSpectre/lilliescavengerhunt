@@ -4,7 +4,7 @@
       "Introduction": {
         "Messages": [
           {
-            "Body": "Awesome! Our first stop is nearby. To help kick of your journey, we got a little help from a familiar face. Click this link to receive your clue: {0}",
+            "Body": "Awesome! Our first stop is nearby. To help kick off your journey, we got a little help from a bonnie familiar face. Click this link to receive your clue: {0}",
             "Path": "video",
             "Title": "Start with Sashimi"
           }
