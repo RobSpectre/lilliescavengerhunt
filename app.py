@@ -117,16 +117,14 @@ def player():
         response.redirect('/player/{0}'.format(request.cookies.get('Stop')))
         resp = make_response(str(response))
     elif "YES" in request.form['Body'].upper():
-        msg = response.message("Awesome! Gather up your crew and get stoked for "
-                               "a rad photo scavenger hunt around lovely Livingston "
-                               "Manor. A few folks you might know are going to give "
-                               "you clues of locations you will need to go. To "
-                               "memorialize this time with your besties, snag a "
-                               "picture with your fellow Scavengers at each spot. "
-                               "If you find all the locations, a special surprise "
-                               "awaits!")
-        msg.media(url_for('static',
-                          filename='images/scavengers_assemble.jpg'))
+        response.message("Awesome! Gather up your crew and get stoked for "
+                         "a rad photo scavenger hunt around lovely Livingston "
+                         "Manor. A few folks you might know are going to give "
+                         "you clues of locations you will need to go. To "
+                         "memorialize this time with your besties, snag a "
+                         "picture with your fellow Scavengers at each spot. "
+                         "If you find all the locations, a special surprise "
+                         "awaits!")
         response.message("If you ever need assistance on your journey, text "
                          "HELP to see all the available options. If you're "
                          "confused by a particular hint, text CLUE to get "
@@ -134,7 +132,9 @@ def player():
                          "still stuck after that, just text me here and "
                          "our hyper intelligent machine learning algorithm "
                          "will determine how to help.")
-        response.message("Are you ladies ready to go? Text YES or NO.")
+        msg = response.message("Are you ladies ready to go? Text YES or NO.")
+        msg.media(url_for('static',
+                          filename='images/scavengers_assemble.jpg'))
 
         resp = make_response(str(response))
         resp.set_cookie("Stop", "Fish")

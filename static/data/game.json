@@ -86,7 +86,7 @@
         "Messages": [
           {
             "Body": "Bingo bongo! Good lookin' bridge, better lookin' ladies. Next stop is a bit of a drive - maybe use the restroom before continuing.\n\nText YES when y'all are ready to boogie.",
-            "Media": "/images/bridge.gif"
+            "Media": "images/bridge.gif"
           }
         ],
         "Next": "Farm"
