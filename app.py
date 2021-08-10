@@ -126,7 +126,7 @@ def player():
                                "If you find all the locations, a special surprise "
                                "awaits!")
         msg.media(url_for('static',
-                          filename='/static/images/scavengers_assemble.jpg'))
+                          filename='images/scavengers_assemble.jpg'))
         response.message("If you ever need assistance on your journey, text "
                          "HELP to see all the available options. If you're "
                          "confused by a particular hint, text CLUE to get "
