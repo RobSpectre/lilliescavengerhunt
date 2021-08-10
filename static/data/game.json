@@ -55,6 +55,9 @@
             "Body": "Terrific. For this one, we'll need to hop in the car. We're in search of a shabby, rough hewn, adorable piece of architecture. Who better to help you on the way the way than this guy? Click on the link to get your clue: {0}",
             "Path": "video",
             "Title": "Over Troubled Waters"
+          },
+          {
+            "Body": "If you're looking for a soundtrack on your journey, give this a spin: https://open.spotify.com/playlist/6SYcENrgLe6yEQxwUSxi87?si=a2203ef805024fb2"
           }
         ]
       },
@@ -97,6 +100,9 @@
             "Body": "Rad - here we go! Scoot to your coupe and get ready to get your Google on. We're looking for a farm with a particular type of animal. To help, we've enlisted this party animal to send you on your way. Click this link to get your clue: {0}",
             "Path": "video",
             "Title": "Camelids Have More Fun"
+          },
+          {
+            "Body": "Here's some more tunes to keep you company: https://open.spotify.com/playlist/38C5Ocagqx17HYj10eFLaA?si=924bb8f479894f0d"
           }
         ]
       },
@@ -142,6 +148,9 @@
             "Body": "In small towns like these places of worship represent the best of what local artisans have to offer. To help us find a special one in Livingston Manor, we consult the august historian of Letterkenny. Click this link for the next stop on the hunt: {0}",
             "Path": "video",
             "Title": "Brothers and Sisters"
+          },
+          {
+            "Body": "More tunes celebrating the countryside you're driving through on the way back to town: https://open.spotify.com/playlist/40cIEZjCx9fGDN10ngZteZ?si=b4e8e334c84c4794" 
           }
         ]
       },
@@ -187,6 +196,9 @@
             "Body": "Hopefully all this running around made you thirsty. We have one last clue delivered from one guy who knows how to have a good time. Click this link to wrap up the hunt: {0}",
             "Path": "video",
             "Title": "Puppers Time"
+          },
+          {
+            "Body": "One last jam to conclude our adventure: https://open.spotify.com/playlist/31easNJX8gQ5Cbd9jBaY5S?si=963a74ce0ccd4068" 
           }
         ]
       },
