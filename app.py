@@ -69,11 +69,16 @@ def gm():
                "for a fun adventure to kick off your 40th? " \
                "" \
                "Text YES or NO."
+
+        send_player_message(body)
+
         response.message("Message sent.")
+    elif request.form['Body'].upper().startswith("ADMIN"):
+        response.redirect('/gm/admin')
     else:
         body = request.form['Body']
 
-    send_player_message(body)
+        send_player_message(body)
 
     return str(response)
 
@@ -82,41 +87,25 @@ def gm():
 def player():
     response = MessagingResponse()
 
-    if "HELP" == request.form['Body'].upper():
+    if request.form['Body'].upper().startswith("HELP"):
         response.message("Text CLUE to get another hint about where you "
                          "need to go.\nText STUCK to summon the bat signal "
                          "and get additional assistance.\nIf you have "
                          "another question, just text to connect with our "
                          "AI.\nHave fun!")
         resp = make_response(str(response))
-    elif "STUCK" == request.form['Body'].upper():
+    elif request.form['Body'].upper().startswith("STUCK"):
         response.message("Help is on the way!")
         resp = make_response(str(response))
 
         send_gm_message("Player is indicating she is stuck.")
-    elif "ADMIN RESTART" == request.form['Body'].upper():
-        response.message("Restarting game.")
+    elif request.form['Body'].upper().startswith("ADMIN"):
+        response.redirect('/gm/admin')
         resp = make_response(str(response))
-
-        resp.set_cookie("Stop", "", expires=0)
-        resp.set_cookie("Clue", "", expires=0)
-        send_gm_message("Player restarted game.")
-    elif "ADMIN " in request.form['Body'].upper():
-        stop = int(request.form['Body'].upper().replace('ADMIN ', '').strip())
-
-        stop = [n[0] for n in app.config['Game']['Stop'].items()][stop]
-
-        response.message("Game reset to {0}.".format(stop))
-        resp = make_response(str(response))
-
-        resp.set_cookie("Stop", stop)
-        resp.set_cookie("Clue", "0")
-
-        send_gm_message("Player reset game to {0}.".format(stop))
     elif request.cookies.get('Stop', None):
         response.redirect('/player/{0}'.format(request.cookies.get('Stop')))
         resp = make_response(str(response))
-    elif "YES" in request.form['Body'].upper():
+    elif request.form['Body'].upper().startswith("YES"):
         response.message("Awesome! Gather up your crew and get stoked for "
                          "a rad photo scavenger hunt around lovely Livingston "
                          "Manor. A few folks you might know are going to give "
@@ -247,6 +236,33 @@ def video(location):
 
     return render_template('video.html', video=video, title=title,
                            thumbnail=thumbnail)
+
+
+@app.route('/gm/admin', methods=['GET', 'POST'])
+def admin():
+    response = MessagingResponse()
+
+    if "ADMIN RESTART" == request.form['Body'].upper():
+        response.message("Restarting game.")
+        resp = make_response(str(response))
+
+        resp.set_cookie("Stop", "", expires=0)
+        resp.set_cookie("Clue", "", expires=0)
+        send_gm_message("Player restarted game.")
+    elif "ADMIN " in request.form['Body'].upper():
+        stop = int(request.form['Body'].upper().replace('ADMIN ', '').strip())
+
+        stop = [n[0] for n in app.config['Game']['Stop'].items()][stop]
+
+        response.message("Game reset to {0}.".format(stop))
+        resp = make_response(str(response))
+
+        resp.set_cookie("Stop", stop)
+        resp.set_cookie("Clue", "0")
+
+        send_gm_message("Player reset game to {0}.".format(stop))
+
+    return resp
 
 
 def send_player_message(body, media_url=None):

@@ -98,6 +98,13 @@ class GMTest(TwiMLTest):
                                                to=app.config['TWILIO_PLAYER'],
                                                body="Testing a reply.")
 
+    def test_gm_admin_command(self):
+        response = self.sms("ADMIN 2", url="/gm")
+
+        self.assertTwiML(response)
+        self.assertTrue("Redirect" in str(response.data))
+        self.assertTrue("/gm/admin" in str(response.data))
+
 
 class PlayerTest(TwiMLTest):
     def test_sms(self):
@@ -168,7 +175,7 @@ class PlayerTest(TwiMLTest):
 
     def test_player_game_redirect(self):
         self.app.set_cookie('localhost', 'Stop', 'Fish')
-        response = self.sms("YES", url="player")
+        response = self.sms("YES", url="/player")
 
         self.assertTwiML(response)
         self.assertTrue("Redirect" in str(response.data))
@@ -179,6 +186,13 @@ class PlayerTest(TwiMLTest):
 
         self.assertEqual(response.status_code, 404)
         self.assertTrue("File Not Found" in str(response.data))
+
+    def test_player_admin_command(self):
+        response = self.sms("ADMIN 2", url="/player")
+
+        self.assertTwiML(response)
+        self.assertTrue("Redirect" in str(response.data))
+        self.assertTrue("/gm/admin" in str(response.data))
 
 
 class PlayerTestGame(TwiMLTest):
@@ -351,7 +365,7 @@ class TestPlayerEdges(TwiMLTest):
         create_message_mock.return_value.sid = "SM718"
         self.app.set_cookie('localhost', 'Stop', "Fish")
 
-        response = self.sms("ADMIN RESTART", url="/player")
+        response = self.sms("ADMIN RESTART", url="/gm/admin")
 
         self.assertTwiML(response)
         self.assertTrue("Message" in str(response.data))
@@ -369,7 +383,7 @@ class TestPlayerEdges(TwiMLTest):
         create_message_mock.return_value.sid = "SM718"
         self.app.set_cookie('localhost', 'Stop', "Fish")
 
-        response = self.sms("ADMIN 1", url="/player")
+        response = self.sms("ADMIN 1", url="/gm/admin")
 
         self.assertTwiML(response)
         self.assertTrue("Message" in str(response.data))
