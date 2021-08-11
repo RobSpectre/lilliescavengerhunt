@@ -308,7 +308,7 @@ class PlayerTestGame(TwiMLTest):
 
             self.assertEqual(response.status_code, 200)
 
-        response = self.app.get('/video/Rob')
+        response = self.app.get('/video/Final')
 
         self.assertEqual(response.status_code, 200)
 

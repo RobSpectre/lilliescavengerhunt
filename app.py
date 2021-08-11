@@ -187,7 +187,7 @@ def player_game(stop):
 
         for message in data['Victory']['Messages']:
             if stop == "Brewery":
-                response = reply_message(response, message, "Rob")
+                response = reply_message(response, message, "Final")
             else:
                 response = reply_message(response, message, stop)
 
@@ -224,7 +224,7 @@ def video(location):
         title = "Puppers Time"
         video = url_for('static', filename='video/nathandales.mp4')
         thumbnail = url_for('static', filename='images/bobweir.png')
-    elif location == "Rob":
+    elif location == "Final":
         title = "Happy Berfday Lillie!"
         video = url_for('static', filename='video/robspectre.mp4')
         thumbnail = url_for('static', filename='images/rogerdaltrey.png')
